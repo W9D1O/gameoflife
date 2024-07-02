@@ -1,7 +1,7 @@
 from raylibpy import *
 import copy
 pixel = 20
-dimen = 25
+dimen = 40
 
 
 def init_m():
@@ -59,18 +59,14 @@ def colorear(tab):
 
             mouse(tab)
             if tab[i][j] == 1:
-                draw_rectangle(j*pixel, i*pixel, pixel *
-                               dimen, pixel*dimen, WHITE)
-            elif tab[i][j] == 0:
-                draw_rectangle(j*pixel, i*pixel, pixel *
-                               dimen, pixel*dimen, BLACK)
+                draw_rectangle(j*pixel, i*pixel, pixel, pixel, WHITE)
             draw_rectangle_lines(j*pixel, i*pixel, pixel *
                                  dimen, pixel*dimen, GRAY)
 
 
 def main():
     tab = init_m()
-
+    delta = 0
     ashanca = False
 
     init_window(pixel * (dimen), pixel*(dimen),
@@ -79,16 +75,19 @@ def main():
     while not window_should_close():
         begin_drawing()
         clear_background(BLACK)
+        delta += get_frame_time()
         colorear(tab)
 
         if is_mouse_button_down(MOUSE_BUTTON_LEFT):
             ashanca = False
         elif is_mouse_button_up(MOUSE_BUTTON_LEFT):
             ashanca = True
-        elif is_key_buttom_pressed(KEY_SPACE):
+        elif is_key_button_pressed(KEY_SPACE):
             ashanca = False
-        if ashanca:
+        if ashanca and delta > 0.15:
             tab = act_tab(tab)
+            delta = 0
+
         end_drawing()
     close_window()
 
